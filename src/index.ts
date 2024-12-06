@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express'
-
+import bodyParser from 'body-parser'
 const app = express()
 
 const port = process.env.PORT || 5000
@@ -7,6 +7,8 @@ const port = process.env.PORT || 5000
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'orange'}]
 const adresses = [{id: 1, value: 'Nezalejnasti 12'}, {id: 2, value: 'Selickaga 11'}]
 
+const parserMiddleware = bodyParser({})
+app.use(parserMiddleware)
 app.get('/products', (req: Request, res: Response) => {
     if (req.query.title) {
         let searchString = req.query.title.toString();
@@ -14,6 +16,16 @@ app.get('/products', (req: Request, res: Response) => {
     } else {
         res.send(products)
     }
+
+})
+app.post('/products', (req: Request, res: Response) => {
+    const newProduct = {
+        id: +(new Date()),
+        title: req.body.title,
+    }
+    products.push(newProduct)
+
+    res.status(201).send(newProduct)
 
 })
 app.get('/products/:id', (req: Request, res: Response) => {

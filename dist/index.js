@@ -4,10 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
 const products = [{ id: 1, title: 'tomato' }, { id: 2, title: 'orange' }];
 const adresses = [{ id: 1, value: 'Nezalejnasti 12' }, { id: 2, value: 'Selickaga 11' }];
+const parserMiddleware = (0, body_parser_1.default)({});
+app.use(parserMiddleware);
 app.get('/products', (req, res) => {
     if (req.query.title) {
         let searchString = req.query.title.toString();
@@ -16,6 +19,14 @@ app.get('/products', (req, res) => {
     else {
         res.send(products);
     }
+});
+app.post('/products', (req, res) => {
+    const newProduct = {
+        id: +(new Date()),
+        title: req.body.title,
+    };
+    products.push(newProduct);
+    res.status(201).send(newProduct);
 });
 app.get('/products/:id', (req, res) => {
     let product = products.find(p => p.id === +req.params.id);
