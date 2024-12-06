@@ -38,6 +38,17 @@ app.get('/products/:id', (req, res) => {
     }
     res.send(product);
 });
+app.put('/products/:id', (req, res) => {
+    let product = products.find(p => p.id === +req.params.id);
+    if (product) {
+        product.title = req.body.title;
+        res.send(product);
+    }
+    else {
+        res.send(404);
+    }
+    res.send(product);
+});
 app.delete('/products/:id', (req, res) => {
     for (let i = 0; products.length > i; i++) {
         if (products[i].id === +req.params.id) {

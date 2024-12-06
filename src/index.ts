@@ -37,6 +37,16 @@ app.get('/products/:id', (req: Request, res: Response) => {
     }
     res.send(product)
 })
+app.put('/products/:id', (req: Request, res: Response) => {
+    let product = products.find(p => p.id === +req.params.id);
+    if (product) {
+        product.title = req.body.title
+        res.send(product)
+    } else {
+        res.send(404)
+    }
+    res.send(product)
+})
 app.delete('/products/:id', (req: Request, res: Response) => {
     for (let i = 0; products.length > i; i++) {
         if (products[i].id === +req.params.id) {
