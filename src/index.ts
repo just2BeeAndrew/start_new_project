@@ -1,9 +1,18 @@
 import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
-const app = express()
+export const app = express()
 
 const port = process.env.PORT || 5000
 
+export const HTTP_STATUSES = {
+    OK_200: 200,
+    CREATED_201: 201,
+    NO_CONTENT_204: 204,
+
+    BAD_REQUEST_400: 400,
+    NOT_FOUND_404: 404
+
+}
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'orange'}]
 const adresses = [{id: 1, value: 'Nezalejnasti 12'}, {id: 2, value: 'Selickaga 11'}]
 
@@ -68,6 +77,10 @@ app.get('/adresses/:id', (req: Request, res: Response) => {
         res.send(404)
     }
     res.send(adress)
+})
+
+app.delete('/__test__/data', (req: Request, res: Response) => {
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 })
 
 app.listen(port, () => {
